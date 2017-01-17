@@ -1,0 +1,44 @@
+name: iotivity-example
+version: 0.0.1
+summary: An iotivity example server-client in one snap
+description: Build an iotivity simple example of server and client
+confinement: devmode
+
+apps:
+    simple-server:
+        command: bin/simpleserver
+        daemon: simple
+    simple-client:
+        command: bin/simpleclient
+
+parts:
+    iotivity-src:
+        plugin: scons
+        scons-options:
+            - RELEASE=false
+        source: https://github.com/iotivity/iotivity.git
+        # todo: to automate following actions into parts/iotivity-src
+        # git clone https://github.com/01org/tinycbor.git extlibs/tinycbor/tinycbor
+        # git clone https://github.com/ARMmbed/mbedtls.git extlibs/mbedtls/mbedtls
+        #
+        build-packages:
+            - libboost-dev
+            - libboost-thread-dev
+            - libssl-dev
+            - libtool
+            - pkg-config
+            - uuid-dev
+            - libglib2.0-dev
+            - libsqlite3-dev
+            # because of googletest
+            - zip
+            - autoconf
+    
+    moving-binaries:
+        plugin: dump
+        source: parts/iotivity-src/build/out/linux/x86_64/debug/resource/examples
+        organize:
+            simpleclient: bin/simpleclient
+            simpleserver: bin/simpleserver
+        snap:
+            - bin
