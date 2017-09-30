@@ -1,4 +1,4 @@
-name: iotivity-example
+name: iotivity-example-apps
 version: 0.0.1
 summary: An iotivity example server-client in one snap
 description: Build an iotivity simple example of server and client
